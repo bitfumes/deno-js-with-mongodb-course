@@ -44,7 +44,14 @@ export default {
     ctx.response.status = 201;
     ctx.response.body = insertId;
   },
-  update(ctx: any) {
+  async update(ctx: any) {
+    const { value } = await ctx.request.body();
+    await user.updateOne(
+      { _id: { $oid: ctx.params.id } },
+      { $set: value },
+    );
+    ctx.response.status = 200;
+    ctx.response.body = { message: "updated" };
   },
   async destroy(ctx: any) {
     await user.deleteOne({ _id: { $oid: ctx.params.id } });

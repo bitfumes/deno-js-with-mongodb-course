@@ -14,8 +14,9 @@ export default {
   },
   async store(ctx: any) {
     const { value } = await ctx.request.body();
+    const insertId = await user.insertOne(value);
     ctx.response.status = 201;
-    ctx.response.body = value;
+    ctx.response.body = insertId;
   },
   update(ctx: any) {
   },

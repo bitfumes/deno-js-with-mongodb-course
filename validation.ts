@@ -24,5 +24,15 @@ export default {
 
 
         return value;
+    },
+    async validateUpdate(ctx:any){
+        const { value } = await ctx.request.body();
+        if (!value || Object.keys(value).length === 0) {
+            ctx.response.status = 400; // bad request
+            ctx.response.body = { error: "Please provide the required data" };
+            return false;
+        }
+          
+        return value;
     }
 }

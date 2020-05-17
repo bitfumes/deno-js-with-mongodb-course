@@ -1,5 +1,7 @@
 export default {
     async validate(ctx:any){
+        let errors = [];
+        let status ;
         const { value } = await ctx.request.body();
         if (!value) {
             ctx.response.status = 400; // bad request
@@ -10,12 +12,14 @@ export default {
         const fields = ['email','password','name'];
         for (let index = 0; index < fields.length; index++) {
             if (!value[fields[index]]) {
-                ctx.response.status = 422; // unprocessable entity
-                ctx.response.body = {
-                    error: { message: `${fields[index]} field is required` },
-                };
-                return false;
+                status = 422; // unprocessable entity
+                errors.push( { [fields[index]]: `${fields[index]} field is required` })
             }
+        }
+
+        if(status){
+            ctx.response.body = {errors}
+            return false;
         }
 
 

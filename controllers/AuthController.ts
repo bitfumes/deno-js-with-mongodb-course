@@ -6,14 +6,29 @@ import hash from "../util/hash.ts";
 
 export default {
   async login(ctx: any) {
+    // validation
     const value = await validation.validateLogin(ctx);
-    if (value) {
-      const user = await userCollection.findOne({ email: value.email });
-      let passwordMatched = false;
-      if (user) {
-        passwordMatched = hash.verify(user.password, value.password);
-      }
-      ctx.response.body = passwordMatched;
+    if (!value) {
+      ctx.response.status = 422;
+      ctx.response.body = { error: "Please provide required data" };
+      return;
     }
+
+    // fetch user
+    const user = await userCollection.findOne({ email: value.email });
+    if (!user) {
+      ctx.response.status = 422;
+      ctx.response.body = { error: "Credentials doesn't match out record" };
+      return;
+    }
+
+    // verify password
+    const passwordMatched = hash.verify(user.password, value.password);
+    if (!passwordMatched) {
+      ctx.response.body = { error: "Password is incorrect" };
+      return;
+    }
+
+    ctx.response.body = user;
   },
 };

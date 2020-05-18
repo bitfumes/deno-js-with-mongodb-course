@@ -2,6 +2,7 @@ import db from "../config/databases.ts";
 import { ObjectId } from "https://deno.land/x/mongo@v0.6.0/mod.ts";
 const user = db.collection("users");
 import validation from "../validation.ts";
+import hash from "../util/hash.ts";
 
 export default {
   async index(ctx: any) {
@@ -22,6 +23,7 @@ export default {
   async store(ctx: any) {
     const value = await validation.validate(ctx);
     value.created_at = parseInt((new Date().getTime() / 1000).toString());
+    value.password = hash.bcrypt(value.password);
     if (value) {
       const insertId = await user.insertOne(value);
       ctx.response.status = 201;

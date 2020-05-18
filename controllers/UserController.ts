@@ -1,4 +1,5 @@
 import db from "../config/databases.ts";
+import { ObjectId } from "https://deno.land/x/mongo@v0.6.0/mod.ts";
 const user = db.collection("users");
 import validation from "../validation.ts";
 export default {
@@ -7,10 +8,15 @@ export default {
     ctx.response.body = data;
   },
   async show(ctx: any) {
-    const data = await user.findOne(
-      { _id: { $oid: ctx.params.id } },
-    );
-    ctx.response.body = data;
+    try {
+      const data = await user.findOne(
+        { _id: ObjectId(ctx.params.id) },
+      );
+      ctx.response.body = data;
+    } catch (e) {
+      ctx.response.status = 404;
+      ctx.response.body = { error: "User does't exists in our database." };
+    }
   },
   async store(ctx: any) {
     const value = await validation.validate(ctx);
@@ -28,16 +34,26 @@ export default {
         name: value.name,
         password: value.password,
       };
-      await user.updateOne(
-        { _id: { $oid: ctx.params.id } },
-        { $set: data },
-      );
-      ctx.response.status = 200;
-      ctx.response.body = { message: "updated" };
+      try {
+        await user.updateOne(
+          { _id: ObjectId(ctx.params.id) },
+          { $set: data },
+        );
+        ctx.response.status = 200;
+        ctx.response.body = { message: "updated" };
+      } catch (e) {
+        ctx.response.status = 404;
+        ctx.response.body = { error: "User does't exists in our database." };
+      }
     }
   },
   async destroy(ctx: any) {
-    await user.deleteOne({ _id: { $oid: ctx.params.id } });
-    ctx.response.status = 204; // no content
+    try {
+      await user.deleteOne({ _id: ObjectId(ctx.params.id) });
+      ctx.response.status = 204; // no content
+    } catch (e) {
+      ctx.response.status = 404;
+      ctx.response.body = { error: "User does't exists in our database." };
+    }
   },
 };

@@ -11,7 +11,7 @@
         ".py",
         ".json"
     ],
-    "interval": 500,
+    "interval": 2000,
     "watch": [
         "/"
     ],

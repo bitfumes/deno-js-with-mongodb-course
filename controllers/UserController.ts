@@ -1,6 +1,6 @@
 import db from "../config/databases.ts";
 const user = db.collection("users");
-import validation from '../validation.ts'
+import validation from "../validation.ts";
 export default {
   async index(ctx: any) {
     const data = await user.find();
@@ -14,7 +14,7 @@ export default {
   },
   async store(ctx: any) {
     const value = await validation.validate(ctx);
-    if(value){
+    if (value) {
       const insertId = await user.insertOne(value);
       ctx.response.status = 201;
       ctx.response.body = insertId;
@@ -22,8 +22,12 @@ export default {
   },
   async update(ctx: any) {
     const value = await validation.validateUpdate(ctx);
-    if(value){
-      const data = {email : value.email,name:value.name,password:value.password};
+    if (value) {
+      const data = {
+        email: value.email,
+        name: value.name,
+        password: value.password,
+      };
       await user.updateOne(
         { _id: { $oid: ctx.params.id } },
         { $set: data },

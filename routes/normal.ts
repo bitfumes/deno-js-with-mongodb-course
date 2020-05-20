@@ -1,6 +1,6 @@
 import { Router } from "https://deno.land/x/oak/mod.ts";
-import UserController from "./controllers/UserController.ts";
-import AuthController from "./controllers/AuthController.ts";
+import UserController from "../controllers/UserController.ts";
+import AuthController from "../controllers/AuthController.ts";
 const router = new Router();
 
 router.get("/user", UserController.index)

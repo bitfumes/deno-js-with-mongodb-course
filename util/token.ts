@@ -20,4 +20,7 @@ export default {
   generate(): string {
     return makeJwt({ header, payload, key });
   },
+  async validate(token: string) {
+    return !!await validateJwt(token, key, { isThrowing: false });
+  },
 };

@@ -30,6 +30,6 @@ export default {
       return;
     }
 
-    ctx.response.body = token.generate();
+    ctx.response.body = token.generate(user._id.$oid);
   },
 };

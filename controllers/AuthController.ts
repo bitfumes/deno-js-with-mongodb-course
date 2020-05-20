@@ -3,6 +3,7 @@ import { ObjectId } from "https://deno.land/x/mongo@v0.6.0/mod.ts";
 const userCollection = db.collection("users");
 import validation from "../validation.ts";
 import hash from "../util/hash.ts";
+import token from "../util/token.ts";
 
 export default {
   async login(ctx: any) {
@@ -29,6 +30,6 @@ export default {
       return;
     }
 
-    ctx.response.body = user;
+    ctx.response.body = token.generate();
   },
 };

@@ -17,7 +17,9 @@ export default {
     const user = await userCollection.findOne({ email: value.email });
     if (!user) {
       ctx.response.status = 422;
-      ctx.response.body = { error: "Credentials doesn't match out record" };
+      ctx.response.body = {
+        errors: { message: "Credentials doesn't match out record" },
+      };
       return;
     }
 

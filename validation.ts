@@ -28,7 +28,9 @@ export default {
     const { value } = await ctx.request.body();
     if (!value || Object.keys(value).length === 0) {
       ctx.response.status = 400; // bad request
-      ctx.response.body = { error: "Please provide the required data" };
+      ctx.response.body = {
+        errors: { message: "Please provide the required data" },
+      };
       return false;
     }
 
@@ -40,7 +42,9 @@ export default {
     const { value } = await ctx.request.body();
     if (!value) {
       ctx.response.status = 400; // bad request
-      ctx.response.body = { error: "Please provide the required data" };
+      ctx.response.body = {
+        errors: { message: "Please provide the required data" },
+      };
       return;
     }
 

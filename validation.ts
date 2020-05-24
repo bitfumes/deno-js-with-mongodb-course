@@ -53,6 +53,7 @@ export default {
     }
 
     if (status) {
+      ctx.response.status = status;
       ctx.response.body = { errors };
       return false;
     }

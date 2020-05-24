@@ -10,8 +10,6 @@ export default {
     // validation
     const value = await validation.validateLogin(ctx);
     if (!value) {
-      ctx.response.status = 422;
-      ctx.response.body = { error: "Please provide required data" };
       return;
     }
 

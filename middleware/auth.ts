@@ -1,11 +1,11 @@
 import token from "../util/token.ts";
 export default {
-  async authorized(ctx: any, next: any) {
+  async authorized(ctx: any) {
     const authorization = ctx.request.headers.get("authorization");
     if (!authorization) {
       ctx.response.status = 401; // unauthorised
       ctx.response.body = { error: "Unauthorized" };
-      return;
+      return false;
     }
     const headerToken = authorization.replace("Bearer ", "");
     // validate token
@@ -13,9 +13,9 @@ export default {
     if (!isTokenValid) {
       ctx.response.status = 401; // unauthorised
       ctx.response.body = { error: "Unauthorized" };
-      return;
+      return false;
     }
 
-    await next();
+    return headerToken;
   },
 };

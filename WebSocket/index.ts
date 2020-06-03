@@ -13,7 +13,7 @@ export default async (ctx: any, next: () => Promise<void>) => {
         console.log("Websocket connection established");
         for await (const event of ws) {
         }
-      }
+      },
     );
   } else {
     await next();

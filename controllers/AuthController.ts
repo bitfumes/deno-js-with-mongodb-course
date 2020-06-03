@@ -24,7 +24,7 @@ export default {
     }
 
     // verify password
-    const passwordMatched = hash.verify(user.password, value.password);
+    const passwordMatched = await hash.verify(user.password, value.password);
     if (!passwordMatched) {
       ctx.response.body = { error: "Password is incorrect" };
       return;

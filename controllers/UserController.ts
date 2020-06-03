@@ -20,9 +20,9 @@ export default {
   },
   async store(ctx: any) {
     const value = await validation.validate(ctx);
-    value.created_at = parseInt((new Date().getTime() / 1000).toString());
-    value.password = hash.bcrypt(value.password);
     if (value) {
+      value.created_at = parseInt((new Date().getTime() / 1000).toString());
+      value.password = await hash.bcrypt(value.password);
       const insertId = await user.insertOne(value);
       ctx.response.status = 201;
       ctx.response.body = insertId;

@@ -11,9 +11,7 @@ export default {
   },
   async show(ctx: any) {
     try {
-      const data = await user.findOne(
-        { _id: ObjectId(ctx.params.id) },
-      );
+      const data = await user.findOne({ _id: ObjectId(ctx.params.id) });
       ctx.response.body = data;
     } catch (e) {
       ctx.response.status = 404;
@@ -39,10 +37,7 @@ export default {
         password: value.password,
       };
       try {
-        await user.updateOne(
-          { _id: ObjectId(ctx.params.id) },
-          { $set: data },
-        );
+        await user.updateOne({ _id: ObjectId(ctx.params.id) }, { $set: data });
         ctx.response.status = 200;
         ctx.response.body = { message: "updated" };
       } catch (e) {
